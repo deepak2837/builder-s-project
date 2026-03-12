@@ -1,0 +1,113 @@
+
+
+1)fsi and carpet area
+2)example 7000 sqft plot
+
+Fst 1.1 basic premium fsi 0.5
+
+Base *0.5 + 1.1
+
+Fsi have rules and norms
+
+Then we have to find expenses 
+
+Fsi ke andar tdr no usable fsi area- non usable = rera carpet area
+
+Change in software that buildee should customise like how much commercial and residents
+
+Average pakadke developer should be input whatever he wants
+
+Current carpet area,
+Fsi ka go over udcpr how much extra they get based on road size, so tell to ai how much extra area they get based on udcpr 
+
+
+
+After all fsi and tdrs,
+
+We get area ,
+
+We calculate area and get things , we get expenses 
+
+Cost of constructions 
+
+On redevelopment we have to give rent to people for 36 months and shop 
+On fsi we have to give to mmbc, land charges,
+
+99 acres gibe them ability to change
+
+Add the corpus fund , negotiable 
+
+Minus existing area 1.2 1.15 get their existing areas, give corpus fund 100 cr builders budget 5% sqft wise of the building 
+
+
+Main purpose of the app :
+Feasibilty report based on MBMC and UDCPR 
+
+Udpcr.in , give fsi , we need feasiblity score construction company can use 
+
+Feasibilty score is like how much its feasible for the builder
+
+Permission 
+
+3500 crore construction cost,
+Based on area we can add basic construction cost based kn amoung
+
+
+2 97 000 sqft total permissable area- non usable area = 2.28 lakh area
+
+Cost of construction : 114 cr
+
+
+
+Total cost of xinstryction : 3500 sq ft
+
+
+2.28 lakh sqft
+
+Existing carpet area : 67900 add 20% on agreement, 20% extra on each unit 
+
+- + should be adjustable on cost 
+
+Balance 144k baalnce area for others aftee givomg 20% 67900
+
+Non construction cost : 11 cr
+
+Total sqft * added fsi * sqft rate 
+
+Cost of construction by builders =3500 cr  
+
+Rent cost and all include 
+
+
+Total construcrion cost : 181 cr 
+
+
+Summary :
+
+Total expenses 
+
+1) ANCILLARY
+2)udcpr handbook MBMC cred ai
+
+3)
+
+Feed fwasibilry repoey that is alresy done , suggest best matrics like what goes where  
+
+Feed rules and regulations,next is fsi , premium fsi, tdr , then it would be expenses contsructions charges , builrers will input construcyoon per area, rent, apartment proce unit price per sqft across mumbai per district rent area
+
+We can have chatbot like we have feasibilty report, look over rules regulations and check over feasibilty score ,suggesst what ratio of residential and commercial
+
+Lead generation software apolli.io
+
+Ai assistant , fine construction developers based on 
+
+First see if its working fine, later login
+
+Find construction develpers in apollo.io example
+
+
+Database stored once feasibilty is done export all in excel once feasiblity is done
+
+Always needs to be way to add more, PAN india outside india
+
+Feasiblity 
