@@ -472,6 +472,10 @@ export const DEFAULT_INPUTS: FeasibilityInputs = {
   // at 25%; the acceptance test overrides this to reproduce that document.
   additionalCarpetToTenantsPct: 0.2,
 
+  // Pinned rather than derived: the source report states this figure as
+  // "(Proposed)" off the architect's layout, and the acceptance test reproduces
+  // that document line for line. Deriving it from the building mix gives
+  // 10,892 sq.ft - the same 9.4% share, before the document's rounding.
   developerSplitMode: 'ABSOLUTE',
   developerCommercialCarpetSqft: 10927,
   developerCommercialSharePct: 9.4,
@@ -591,7 +595,9 @@ export function createBlankInputs(authority: Authority = 'MBMC'): FeasibilityInp
     commercialSplitMode: 'PERCENT',
     commercialSharePct: 0,
     commercialAreaSqm: 0,
-    developerSplitMode: 'PERCENT',
+    // One lever, not two: the sale mix is read off the building mix rather
+    // than entered separately.
+    developerSplitMode: 'FOLLOW_BUILDING',
     developerCommercialSharePct: 0,
     developerCommercialCarpetSqft: 0,
 
@@ -1031,9 +1037,11 @@ export const FIELD_META: FieldMeta[] = [
     section: 'handback',
     type: 'select',
     options: [
+      { value: 'FOLLOW_BUILDING', label: 'Follow the building mix' },
       { value: 'PERCENT', label: 'Percentage of balance carpet' },
       { value: 'ABSOLUTE', label: 'Absolute area (sq.ft)' },
     ],
+    help: "Following the building mix is the normal case - the shops in the new building are the commercial area. Pin it only where the architect's layout fixes a different figure.",
   },
   { key: 'developerCommercialSharePct', label: "Developer's commercial share", unit: '%', section: 'handback', type: 'number', step: 0.1 },
   {

@@ -18,6 +18,17 @@ export type BuildingStatus = 'NORMAL' | 'DILAPIDATED' | 'DANGEROUS';
 /** Whether the commercial share of built-up area is given as a % or an absolute figure. */
 export type SplitMode = 'PERCENT' | 'ABSOLUTE';
 
+/**
+ * How the developer's sale mix is decided.
+ *
+ * `FOLLOW_BUILDING` ties it to the building mix, which is the normal case - the
+ * shops in the new building are the commercial area, so the share of the
+ * developer's balance carpet that is commercial is the share of the building
+ * that is commercial. The other two modes exist for a layout that pins the
+ * figure independently, and for reports saved before the two were tied.
+ */
+export type DeveloperSplitMode = SplitMode | 'FOLLOW_BUILDING';
+
 /** The development scheme, which decides which incentive-FSI regulation applies. */
 export type SchemeType =
   | 'STANDARD'
@@ -151,11 +162,15 @@ export interface FeasibilityInputs {
   additionalCarpetToTenantsPct: number;
 
   /**
-   * Developer's saleable commercial carpet, as proposed in the layout.
-   * The source report labels these "(Proposed)" - they come from the architect's
-   * plan, not from a formula, so this is an input.
+   * Developer's saleable commercial carpet.
+   *
+   * Normally `FOLLOW_BUILDING`, where the sale mix is read straight off the
+   * building mix and these two figures are ignored. They are kept because the
+   * source report labels the commercial carpet "(Proposed)" - an architect's
+   * layout can fix it independently - and because reports saved before the two
+   * splits were tied still carry their own value.
    */
-  developerSplitMode: SplitMode;
+  developerSplitMode: DeveloperSplitMode;
   developerCommercialCarpetSqft: number;
   developerCommercialSharePct: number;
 

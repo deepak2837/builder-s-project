@@ -270,10 +270,22 @@ export function computeAreas(inputs: FeasibilityInputs, fsi: FsiBreakdown): Area
     ? rehabCarpetSqft
     : totalExistingReraCarpetSqft + additionalCarpetToTenantsSqft + incentiveCarpetToMembersSqft;
 
+  // The sale mix follows the building mix. The shops in the new building are
+  // the commercial area, so the commercial share of what the developer is left
+  // to sell is the commercial share of the building itself. It is taken on the
+  // loaded built-up figure rather than the raw entitlement because commercial
+  // and residential carry different ancillary loading, and it is the loaded
+  // area the hand-back is drawn out of. On the source report that ratio is
+  // 9.3735%, which is the 9.4% the document itself worked to.
+  const loadedCommercialShare =
+    totalBuaInclAncillarySqm > 0 ? commercialBuaInclAncillarySqm / totalBuaInclAncillarySqm : 0;
+
   const developerCommercialCarpetSqft =
     inputs.developerSplitMode === 'ABSOLUTE'
       ? Math.min(inputs.developerCommercialCarpetSqft, Math.max(0, developerBalanceCarpetSqft))
-      : Math.max(0, developerBalanceCarpetSqft) * (inputs.developerCommercialSharePct / 100);
+      : inputs.developerSplitMode === 'PERCENT'
+        ? Math.max(0, developerBalanceCarpetSqft) * (inputs.developerCommercialSharePct / 100)
+        : Math.max(0, developerBalanceCarpetSqft) * loadedCommercialShare;
   const developerResidentialCarpetSqft = developerBalanceCarpetSqft - developerCommercialCarpetSqft;
 
   return {

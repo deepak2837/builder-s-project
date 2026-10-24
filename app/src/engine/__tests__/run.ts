@@ -367,7 +367,8 @@ const blankChecks: [string, boolean][] = [
   ['existing built-up zero', blank.existingBuiltUpAreaSqm === 0],
   ['tenements zero', blank.residentialTenements === 0],
   ['no TOD assumed', blank.isTodZone === false],
-  ['splits proportional', blank.commercialSplitMode === 'PERCENT' && blank.developerSplitMode === 'PERCENT'],
+  ['building mix proportional', blank.commercialSplitMode === 'PERCENT'],
+  ['sale mix follows the building mix', blank.developerSplitMode === 'FOLLOW_BUILDING'],
   ['tenant uplift 20%', Math.abs(blank.additionalCarpetToTenantsPct - 0.2) < 1e-9],
   ['rate master loaded', blank.asrRatePerSqm === 40800],
 ];
@@ -605,6 +606,79 @@ if (ancillaryRun.summary.totalExpenditure > r.summary.totalExpenditure) {
 // ---------------------------------------------------------------------------
 // DCPR-2034 - Greater Mumbai
 // ---------------------------------------------------------------------------
+section('One mix slider - the sale mix follows the building mix');
+
+// The builder asked for a single control: the shops in the new building are the
+// commercial area, so the commercial share of what is left to sell is the
+// commercial share of the building. The source report set the two separately at
+// 8.42% of BUA and 9.4% of balance carpet - and 9.4% is exactly what the
+// building mix implies once the different ancillary loading is applied, which is
+// why one lever is enough.
+const followed = calculateFeasibility({ ...sita, developerSplitMode: 'FOLLOW_BUILDING' });
+const impliedSharePct =
+  (followed.areas.developerCommercialCarpetSqft / followed.areas.developerBalanceCarpetSqft) * 100;
+
+check("Derived sale mix matches the report's 9.4%", impliedSharePct, 9.4, 0.05, '%');
+check(
+  'Derived commercial carpet is the pinned figure less rounding',
+  followed.areas.developerCommercialCarpetSqft,
+  10927,
+  40,
+  ' sq.ft',
+);
+check(
+  'Residential carpet takes the remainder',
+  followed.areas.developerResidentialCarpetSqft + followed.areas.developerCommercialCarpetSqft,
+  followed.areas.developerBalanceCarpetSqft,
+  0.01,
+  ' sq.ft',
+);
+
+// The single slider has to move cost and income together. Under the old two
+// slider arrangement, dragging the building mix moved the development charge
+// while the sale mix - and therefore the income - stood still.
+const atShare = (pct: number) =>
+  calculateFeasibility({
+    ...sita,
+    developerSplitMode: 'FOLLOW_BUILDING',
+    commercialSplitMode: 'PERCENT',
+    commercialSharePct: pct,
+  });
+const lowMix = atShare(5);
+const highMix = atShare(40);
+
+const mixChecks: [string, boolean][] = [
+  [
+    'More commercial in the building means more commercial to sell',
+    highMix.areas.developerCommercialCarpetSqft > lowMix.areas.developerCommercialCarpetSqft,
+  ],
+  [
+    'and less residential to sell',
+    highMix.areas.developerResidentialCarpetSqft < lowMix.areas.developerResidentialCarpetSqft,
+  ],
+  ['and the income line actually moves', Math.abs(highMix.income.totalIncome - lowMix.income.totalIncome) > 1],
+  ['an all-residential building sells no commercial carpet', atShare(0).areas.developerCommercialCarpetSqft < 0.01],
+  [
+    'an all-commercial building sells no residential carpet',
+    atShare(100).areas.developerResidentialCarpetSqft < 0.01,
+  ],
+  [
+    'a pinned sale mix still overrides the building mix',
+    Math.abs(calculateFeasibility(sita).areas.developerCommercialCarpetSqft - 10927) < 1,
+  ],
+  ['normalising fills the mode in for a report saved without it', normaliseInputs({}).developerSplitMode === 'FOLLOW_BUILDING'],
+];
+mixChecks.forEach(([label, ok]) => {
+  if (ok) {
+    passed++;
+    console.log(`  PASS  ${label}`);
+  } else {
+    failed++;
+    failures.push(`Mix slider: ${label}`);
+    console.log(`  FAIL  ${label}`);
+  }
+});
+
 section('DCPR-2034 - Dharti CHS, Versova (BMC)');
 
 const dharti: FeasibilityInputs = {

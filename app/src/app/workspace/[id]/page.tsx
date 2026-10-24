@@ -207,7 +207,7 @@ export default function WorkspacePage({ params }: { params: Promise<{ id: string
               inputs={result.inputs}
               preview={result}
               onChange={handleUpdateInput}
-              disabled={saving}
+              busy={saving}
             />
             <ResidualPanel inputs={result.effectiveInputs} />
           </div>

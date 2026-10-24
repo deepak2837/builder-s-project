@@ -120,6 +120,7 @@ export function ParameterForm({ inputs, onChange, highlighted, sectionIds, inclu
           if (!isDcpr && DCPR_ONLY.has(f.key)) return false;
           if (f.key === 'commercialAreaSqm') return inputs.commercialSplitMode === 'ABSOLUTE';
           if (f.key === 'commercialSharePct') return inputs.commercialSplitMode === 'PERCENT';
+          // Both are unused when the sale mix follows the building mix.
           if (f.key === 'developerCommercialCarpetSqft') return inputs.developerSplitMode === 'ABSOLUTE';
           if (f.key === 'developerCommercialSharePct') return inputs.developerSplitMode === 'PERCENT';
           if (f.key === 'corpusFundRatePerSqft') return inputs.corpusFundBasis === 'PER_SQFT_EXISTING_CARPET';
